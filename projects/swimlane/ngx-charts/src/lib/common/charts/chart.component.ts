@@ -17,7 +17,7 @@ import { ScaleType } from '../types';
   selector: 'ngx-charts-chart',
   template: `
     <div class="ngx-charts-outer" [style.width.px]="view[0]" [@animationState]="'active'" [@.disabled]="!animations">
-      <svg class="ngx-charts" [attr.width]="chartWidth" [attr.height]="view[1]">
+      <svg class="ngx-charts" [attr.width]="chartWidth" [attr.height]="chartHeight">
         <ng-content></ng-content>
       </svg>
       <ngx-charts-scale-legend
@@ -67,6 +67,7 @@ export class ChartComponent implements OnChanges {
   @Output() legendLabelDeactivate: EventEmitter<{ name: string }> = new EventEmitter();
 
   chartWidth: number;
+  chartHeight: any;
   title: string;
   legendWidth: number;
 
@@ -79,6 +80,7 @@ export class ChartComponent implements OnChanges {
 
   update(): void {
     let legendColumns = 0;
+    this.chartHeight = this.view[1];
     if (this.showLegend) {
       this.legendType = this.getLegendType();
 
@@ -88,6 +90,8 @@ export class ChartComponent implements OnChanges {
         } else {
           legendColumns = 2;
         }
+      } else if (this.legendOptions && this.legendOptions.position === 'below') {
+        this.chartHeight = this.view[1] - 100;
       }
     }
 
