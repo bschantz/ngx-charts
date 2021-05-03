@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { max } from 'd3-array';
 import { arc, pie } from 'd3-shape';
-import { ViewDimensions } from '../common/types';
+import { LabelFormatter, ViewDimensions } from '../common/types';
 import { ColorHelper } from '../common/color.helper';
 
 import { formatLabel, escapeLabel } from '../common/label.helper';
@@ -20,14 +20,14 @@ import { PieData } from './pie-label.component';
 @Component({
   selector: 'g[ngx-charts-pie-series]',
   template: `
-    <svg:g *ngFor="let arc of data; trackBy: trackBy">
+    <svg:g *ngFor="let arc of data; let i = index; trackBy: trackBy">
       <svg:g
         ngx-charts-pie-label
         *ngIf="labelVisible(arc)"
         [data]="arc"
         [radius]="outerRadius"
         [color]="color(arc)"
-        [label]="labelText(arc)"
+        [label]="labelText(arc, i)"
         [labelTrim]="trimLabels"
         [labelTrimSize]="maxLabelLength"
         [max]="max"
@@ -75,7 +75,7 @@ export class PieSeriesComponent implements OnChanges {
   @Input() showLabels: boolean;
   @Input() gradient: boolean;
   @Input() activeEntries: any[];
-  @Input() labelFormatting: any;
+  @Input() labelFormatting: LabelFormatter;
   @Input() trimLabels: boolean = true;
   @Input() maxLabelLength: number = 10;
   @Input() tooltipText: (o: any) => any;
@@ -166,9 +166,9 @@ export class PieSeriesComponent implements OnChanges {
     return this.tooltipTemplate ? undefined : this.tooltipText(a);
   }
 
-  labelText(myArc): string {
+  labelText(myArc: any, index: number): string {
     if (this.labelFormatting) {
-      return this.labelFormatting(myArc.data.name);
+      return this.labelFormatting(myArc.data.name, index, myArc.data);
     }
     return this.label(myArc);
   }

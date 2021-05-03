@@ -131,6 +131,7 @@ export class BubbleChartComponent extends BaseChartComponent {
   @Input() legend = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis: boolean = true;
   @Input() yAxis: boolean = true;
   @Input() showXAxisLabel: boolean;
@@ -207,7 +208,8 @@ export class BubbleChartComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     this.seriesDomain = this.results.map(d => d.name);
@@ -309,6 +311,7 @@ export class BubbleChartComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       position: this.legendPosition,
+      columns: this.legendColumns,
       title: undefined
     };
 

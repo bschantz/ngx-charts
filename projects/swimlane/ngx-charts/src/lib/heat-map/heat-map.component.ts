@@ -98,6 +98,7 @@ export class HeatMapComponent extends BaseChartComponent {
   @Input() legend: boolean;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis: boolean;
   @Input() yAxis: boolean;
   @Input() showXAxisLabel: boolean;
@@ -165,7 +166,8 @@ export class HeatMapComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.scaleType as any,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     if (this.scaleType === ScaleType.Linear) {
@@ -304,7 +306,8 @@ export class HeatMapComponent extends BaseChartComponent {
       domain: this.valueDomain,
       colors: this.scaleType === ScaleType.Ordinal ? this.colors : this.colors.scale,
       title: this.scaleType === ScaleType.Ordinal ? this.legendTitle : undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
   }
 

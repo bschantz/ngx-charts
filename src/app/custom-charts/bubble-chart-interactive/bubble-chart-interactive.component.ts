@@ -144,6 +144,7 @@ export class BubbleChartInteractiveComponent extends BaseChartComponent {
   @Input() autoScale: boolean;
   @Input() schemeType: ScaleType = ScaleType.Ordinal;
   @Input() legendPosition: string = 'right';
+  @Input() legendColumns: number;
   @Input() tooltipDisabled: boolean = false;
   @Input() xScaleMin: any;
   @Input() xScaleMax: any;
@@ -309,6 +310,7 @@ export class BubbleChartInteractiveComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       position: this.legendPosition,
+      columns: this.legendColumns,
       title: undefined
     };
 

@@ -13,7 +13,7 @@ import { scaleBand, scaleLinear } from 'd3-scale';
 import { calculateViewDimensions } from '../common/view-dimensions.helper';
 import { ColorHelper } from '../common/color.helper';
 import { BaseChartComponent } from '../common/base-chart.component';
-import { ViewDimensions, LegendPosition, ScaleType, LegendOptions } from '../common/types';
+import {ViewDimensions, LegendPosition, ScaleType, LegendOptions, LabelFormatter} from '../common/types';
 
 @Component({
   selector: 'ngx-charts-bar-horizontal',
@@ -90,6 +90,7 @@ export class BarHorizontalComponent extends BaseChartComponent {
   @Input() legend = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis;
   @Input() yAxis;
   @Input() showXAxisLabel: boolean;
@@ -116,7 +117,7 @@ export class BarHorizontalComponent extends BaseChartComponent {
   @Input() xScaleMax: number;
   @Input() xScaleMin: number;
   @Input() showDataLabel: boolean = false;
-  @Input() dataLabelFormatting: any;
+  @Input() dataLabelFormatting: LabelFormatter;
   @Input() noBarWhenZero: boolean = true;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
@@ -158,7 +159,8 @@ export class BarHorizontalComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     this.formatDates();
@@ -220,7 +222,8 @@ export class BarHorizontalComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
     if (opts.scaleType === 'ordinal') {
       opts.domain = this.yDomain;

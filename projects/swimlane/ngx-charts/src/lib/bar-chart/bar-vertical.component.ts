@@ -14,7 +14,7 @@ import { calculateViewDimensions } from '../common/view-dimensions.helper';
 import { ColorHelper } from '../common/color.helper';
 import { BaseChartComponent } from '../common/base-chart.component';
 import { DataItem } from '../models/chart-data.model';
-import { ViewDimensions, LegendPosition, LegendOptions, ScaleType } from '../common/types';
+import {ViewDimensions, LegendPosition, LegendOptions, ScaleType, LabelFormatter} from '../common/types';
 
 @Component({
   selector: 'ngx-charts-bar-vertical',
@@ -91,6 +91,7 @@ export class BarVerticalComponent extends BaseChartComponent {
   @Input() legend = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis;
   @Input() yAxis;
   @Input() showXAxisLabel: boolean;
@@ -117,7 +118,7 @@ export class BarVerticalComponent extends BaseChartComponent {
   @Input() yScaleMax: number;
   @Input() yScaleMin: number;
   @Input() showDataLabel: boolean = false;
-  @Input() dataLabelFormatting: any;
+  @Input() dataLabelFormatting: LabelFormatter;
   @Input() noBarWhenZero: boolean = true;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
@@ -158,7 +159,8 @@ export class BarVerticalComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     this.formatDates();
@@ -227,7 +229,8 @@ export class BarVerticalComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
     if (opts.scaleType === ScaleType.Ordinal) {
       opts.domain = this.xDomain;

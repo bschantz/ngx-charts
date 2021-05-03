@@ -1,15 +1,15 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
-  Output,
   EventEmitter,
+  Input,
   OnChanges,
-  SimpleChanges,
-  ChangeDetectionStrategy
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { invertColor } from '../utils/color-utils';
-import { GridItem, GridData } from '../common/grid-layout.helper';
-import { ViewDimensions } from '../common/types';
+import { GridItem } from '../common/grid-layout.helper';
+import { LabelFormatter, ViewDimensions } from '../common/types';
 import { ColorHelper } from '../common/color.helper';
 
 export interface CardModel extends GridItem {
@@ -63,7 +63,7 @@ export class CardSeriesComponent implements OnChanges {
   @Input() emptyColor = 'rgba(0, 0, 0, 0)';
   @Input() textColor: string;
   @Input() valueFormatting: any;
-  @Input() labelFormatting: any;
+  @Input() labelFormatting: LabelFormatter;
   @Input() animations: boolean = true;
 
   @Output() select = new EventEmitter();

@@ -108,6 +108,7 @@ export class BarHorizontalNormalizedComponent extends BaseChartComponent {
   @Input() legend: boolean = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis;
   @Input() yAxis;
   @Input() showXAxisLabel: boolean;
@@ -165,7 +166,8 @@ export class BarHorizontalNormalizedComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     this.formatDates();
@@ -252,7 +254,8 @@ export class BarHorizontalNormalizedComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
     if (opts.scaleType === ScaleType.Ordinal) {
       opts.domain = this.innerDomain;

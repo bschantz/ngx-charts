@@ -163,6 +163,7 @@ export class AreaChartNormalizedComponent extends BaseChartComponent {
   @Input() legend = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis: boolean;
   @Input() yAxis: boolean;
   @Input() showXAxisLabel: boolean = false;
@@ -236,7 +237,8 @@ export class AreaChartNormalizedComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     if (this.timeline) {
@@ -432,7 +434,8 @@ export class AreaChartNormalizedComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
     if (opts.scaleType === ScaleType.Ordinal) {
       opts.domain = this.seriesDomain;

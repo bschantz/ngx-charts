@@ -4,6 +4,7 @@ export interface LegendOptions {
   colors: any;
   domain: any[];
   position: LegendPosition;
+  columns: number;
   title: string;
   scaleType: ScaleType;
 }

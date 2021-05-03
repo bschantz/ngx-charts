@@ -178,6 +178,7 @@ export class LineChartComponent extends BaseChartComponent {
   @Input() legend: boolean;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis: boolean;
   @Input() yAxis: boolean;
   @Input() showXAxisLabel: boolean;
@@ -260,7 +261,8 @@ export class LineChartComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     if (this.timeline) {
@@ -442,7 +444,8 @@ export class LineChartComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
     if (opts.scaleType === ScaleType.Ordinal) {
       opts.domain = this.seriesDomain;

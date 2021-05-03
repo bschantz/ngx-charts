@@ -1,9 +1,9 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { BaseChartComponent } from '../common/base-chart.component';
 import { calculateViewDimensions } from '../common/view-dimensions.helper';
 import { ColorHelper } from '../common/color.helper';
 import { gridLayout, gridSize } from '../common/grid-layout.helper';
-import { ScaleType, ViewDimensions } from '../common/types';
+import { LabelFormatter, ScaleType, ValueFormatter, ViewDimensions } from '../common/types';
 import { CardModel } from './card-series.component';
 
 @Component({
@@ -39,8 +39,8 @@ export class NumberCardComponent extends BaseChartComponent {
   @Input() emptyColor: string = 'rgba(0, 0, 0, 0)';
   @Input() innerPadding: number = 15;
   @Input() textColor: string;
-  @Input() valueFormatting: any;
-  @Input() labelFormatting: any;
+  @Input() valueFormatting: ValueFormatter;
+  @Input() labelFormatting: LabelFormatter;
   @Input() designatedTotal: number;
 
   dims: ViewDimensions;

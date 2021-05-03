@@ -85,7 +85,9 @@ export class ChartComponent implements OnChanges {
       this.legendType = this.getLegendType();
 
       if (!this.legendOptions || this.legendOptions.position === LegendPosition.Right) {
-        if (this.legendType === LegendType.ScaleLegend) {
+        if (this.legendOptions.columns) {
+          legendColumns = this.legendOptions.columns;
+        } else if (this.legendType === LegendType.ScaleLegend) {
           legendColumns = 1;
         } else {
           legendColumns = 2;

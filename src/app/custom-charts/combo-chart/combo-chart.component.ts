@@ -33,6 +33,7 @@ export class ComboChartComponent extends BaseChartComponent {
   @Input() legend = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: string = 'right';
+  @Input() legendColumns: number;
   @Input() xAxis;
   @Input() yAxis;
   @Input() showXAxisLabel;
@@ -114,7 +115,8 @@ export class ComboChartComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition as any
+      legendPosition: this.legendPosition as any,
+      columns: this.legendColumns,
     });
 
     if (!this.yAxis) {
@@ -352,7 +354,8 @@ export class ComboChartComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
     if (opts.scaleType === ScaleType.Ordinal) {
       opts.domain = this.seriesDomain;

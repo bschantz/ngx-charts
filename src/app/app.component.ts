@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
   showLegend = true;
   legendTitle = 'Legend';
   legendPosition = 'right';
+  legendColumns = 4;
   showXAxisLabel = true;
   tooltipDisabled = false;
   showText = true;

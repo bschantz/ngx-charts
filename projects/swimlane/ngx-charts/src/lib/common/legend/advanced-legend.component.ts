@@ -12,6 +12,7 @@ import { trimLabel } from '../trim-label.helper';
 import { formatLabel } from '../label.helper';
 import { DataItem, StringOrNumberOrDate } from '../../models/chart-data.model';
 import { ColorHelper } from '../color.helper';
+import {LabelFormatter, PercentageFormatter, ValueFormatter} from '../types';
 
 export interface AdvancedLegendItem {
   value: StringOrNumberOrDate;
@@ -36,7 +37,7 @@ export interface AdvancedLegendItem {
         [valueFormatting]="valueFormatting"
       ></div>
       <div class="total-value" *ngIf="!animations">
-        {{ valueFormatting ? valueFormatting(roundedTotal) : defaultValueFormatting(roundedTotal) }}
+        {{ valueFormatting ? valueFormatting(roundedTotal, 0, data) : defaultValueFormatting(roundedTotal) }}
       </div>
       <div class="total-label">
         {{ label }}
@@ -44,7 +45,7 @@ export interface AdvancedLegendItem {
       <div class="legend-items-container">
         <div class="legend-items">
           <div
-            *ngFor="let legendItem of legendItems; trackBy: trackBy"
+            *ngFor="let legendItem of legendItems; let i = index; trackBy: trackBy"
             tabindex="-1"
             class="legend-item"
             (mouseenter)="activate.emit(legendItem.data)"
@@ -60,7 +61,7 @@ export interface AdvancedLegendItem {
               [valueFormatting]="valueFormatting"
             ></div>
             <div *ngIf="!animations" class="item-value">
-              {{ valueFormatting ? valueFormatting(legendItem.value) : defaultValueFormatting(legendItem.value) }}
+              {{ valueFormatting ? valueFormatting(legendItem.value, i, legendItem.data) : defaultValueFormatting(legendItem.value) }}
             </div>
             <div class="item-label">{{ legendItem.displayLabel }}</div>
             <div
@@ -95,9 +96,9 @@ export class AdvancedLegendComponent implements OnChanges {
   total: number;
   roundedTotal: number;
 
-  @Input() valueFormatting: (value: number) => any;
-  @Input() labelFormatting: (value: string) => any = label => label;
-  @Input() percentageFormatting: (value: number) => any = percentage => percentage;
+  @Input() valueFormatting: ValueFormatter;
+  @Input() labelFormatting: LabelFormatter = label => label;
+  @Input() percentageFormatting: PercentageFormatter = percentage => percentage;
 
   defaultValueFormatting: (value: number) => any = value => value.toLocaleString();
 
@@ -117,12 +118,12 @@ export class AdvancedLegendComponent implements OnChanges {
   }
 
   getLegendItems(): AdvancedLegendItem[] {
-    return (this.data as any).map(d => {
+    return (this.data as any).map((d, index) => {
       const label = formatLabel(d.name);
       const value = d.value;
       const color = this.colors.getColor(label);
       const percentage = this.total > 0 ? (value / this.total) * 100 : 0;
-      const formattedLabel = typeof this.labelFormatting === 'function' ? this.labelFormatting(label) : label;
+      const formattedLabel = typeof this.labelFormatting === 'function' ? this.labelFormatting(label, index, d) : label;
 
       return {
         _value: value,
@@ -132,7 +133,7 @@ export class AdvancedLegendComponent implements OnChanges {
         label: formattedLabel,
         displayLabel: trimLabel(formattedLabel, 20),
         origialLabel: d.name,
-        percentage: this.percentageFormatting ? this.percentageFormatting(percentage) : percentage.toLocaleString()
+        percentage: this.percentageFormatting ? this.percentageFormatting(percentage, index, d) : percentage.toLocaleString()
       };
     });
   }

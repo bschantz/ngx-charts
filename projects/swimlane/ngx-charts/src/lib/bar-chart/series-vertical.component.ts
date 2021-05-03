@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy, TemplateRef } from '@angular/core';
-import { trigger, style, animate, transition } from '@angular/animations';
-import { formatLabel, escapeLabel } from '../common/label.helper';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, TemplateRef } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { escapeLabel, formatLabel } from '../common/label.helper';
 import { DataItem, StringOrNumberOrDate } from '../models/chart-data.model';
 import { PlacementTypes } from '../common/tooltip/position';
 import { StyleTypes } from '../common/tooltip/style.type';
-import { ScaleType, ViewDimensions } from '../common/types';
+import { LabelFormatter, ScaleType, ViewDimensions } from '../common/types';
 import { ColorHelper } from '../common/color.helper';
 import { BarChartType } from './types/bar-chart-type.enum';
 import { D0Types } from './types/d0-type.enum';
@@ -85,7 +85,7 @@ export class SeriesVerticalComponent implements OnChanges {
   @Input() roundEdges: boolean;
   @Input() animations: boolean = true;
   @Input() showDataLabel: boolean = false;
-  @Input() dataLabelFormatting: any;
+  @Input() dataLabelFormatting: LabelFormatter;
   @Input() noBarWhenZero: boolean = true;
 
   @Output() select: EventEmitter<DataItem> = new EventEmitter();
@@ -207,7 +207,7 @@ export class SeriesVerticalComponent implements OnChanges {
         : `
         <span class="tooltip-label">${escapeLabel(tooltipLabel)}</span>
         <span class="tooltip-val">${
-          this.dataLabelFormatting ? this.dataLabelFormatting(value) : value.toLocaleString()
+          this.dataLabelFormatting ? this.dataLabelFormatting(value, index, d) : value.toLocaleString()
         }</span>
       `;
 

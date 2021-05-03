@@ -1,9 +1,9 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import { ChartCommonModule } from '../chart-common.module';
 import { ColorHelper } from '../color.helper';
-import { ScaleType } from '../types';
+import { LabelFormatter, PercentageFormatter, ScaleType, ValueFormatter } from '../types';
 
 @Component({
   selector: 'test-component',
@@ -28,9 +28,9 @@ class TestComponent {
     ];
   }
 
-  valueFormatting: (value: number) => any = value => value;
-  labelFormatting: (value: string) => any = label => label;
-  percentageFormatting: (value: number) => any = percentage => percentage;
+  valueFormatting: ValueFormatter = value => value;
+  labelFormatting: LabelFormatter = label => label;
+  percentageFormatting: PercentageFormatter = percentage => percentage;
 }
 
 describe('<ngx-charts-advanced-legend>', () => {

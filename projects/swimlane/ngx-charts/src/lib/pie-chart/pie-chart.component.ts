@@ -12,7 +12,7 @@ import { calculateViewDimensions } from '../common/view-dimensions.helper';
 import { ColorHelper } from '../common/color.helper';
 import { BaseChartComponent } from '../common/base-chart.component';
 import { DataItem } from '../models/chart-data.model';
-import { LegendOptions, LegendPosition, ScaleType, ViewDimensions } from '../common/types';
+import { LabelFormatter, LegendOptions, LegendPosition, ScaleType, ViewDimensions } from '../common/types';
 
 @Component({
   selector: 'ngx-charts-pie-chart',
@@ -62,13 +62,14 @@ export class PieChartComponent extends BaseChartComponent {
   @Input() legend: boolean = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() explodeSlices: boolean = false;
   @Input() doughnut: boolean = false;
   @Input() arcWidth: number = 0.25;
   @Input() gradient: boolean;
   @Input() activeEntries: any[] = [];
   @Input() tooltipDisabled: boolean = false;
-  @Input() labelFormatting: any;
+  @Input() labelFormatting: LabelFormatter;
   @Input() trimLabels: boolean = true;
   @Input() maxLabelLength: number = 10;
   @Input() tooltipText: any;
@@ -105,7 +106,8 @@ export class PieChartComponent extends BaseChartComponent {
       height: this.height,
       margins: this.margins,
       showLegend: this.legend,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     this.formatDates();
@@ -154,7 +156,8 @@ export class PieChartComponent extends BaseChartComponent {
       domain: this.domain,
       colors: this.colors,
       title: this.legendTitle,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
   }
 

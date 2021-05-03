@@ -14,18 +14,37 @@ export function calculateViewDimensions({
   showLegend = false,
   legendType = ScaleType.Ordinal,
   legendPosition = LegendPosition.Right,
-  columns = 12
+  columns = 0,
+  totalColumns = 12,
+}: {
+  width: number,
+  height: number,
+  margins: number[],
+  showXAxis?: boolean,
+  showYAxis?: boolean,
+  xAxisHeight?: number,
+  yAxisWidth?: number,
+  showXLabel?: boolean,
+  showYLabel?: boolean,
+  showLegend?: boolean,
+  legendType?: ScaleType,
+  legendPosition?: LegendPosition,
+  columns?: number,
+  totalColumns?: number,
 }): ViewDimensions {
   let xOffset = margins[3];
   let chartWidth = width;
   let chartHeight = height - margins[0] - margins[2];
+  let chartColumns = totalColumns;
 
   if (showLegend) {
     if (legendPosition === LegendPosition.Right) {
-      if (legendType === ScaleType.Ordinal) {
-        columns -= 2;
+      if (columns) {
+        chartColumns = totalColumns - columns;
+      } else if (legendType === ScaleType.Ordinal) {
+        chartColumns = totalColumns - 2;
       } else {
-        columns -= 1;
+        chartColumns = totalColumns - 1;
       }
     } else if (legendPosition === LegendPosition.Below) {
       if (legendType === ScaleType.Ordinal) {
@@ -36,7 +55,7 @@ export function calculateViewDimensions({
     }
   }
 
-  chartWidth = (chartWidth * columns) / 12;
+  chartWidth = (chartWidth * chartColumns) / totalColumns;
 
   chartWidth = chartWidth - margins[1] - margins[3];
 

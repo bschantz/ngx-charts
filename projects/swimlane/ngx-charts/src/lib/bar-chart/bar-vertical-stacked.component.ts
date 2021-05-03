@@ -15,7 +15,7 @@ import { calculateViewDimensions } from '../common/view-dimensions.helper';
 import { ColorHelper } from '../common/color.helper';
 import { Series } from '../models/chart-data.model';
 import { BaseChartComponent } from '../common/base-chart.component';
-import { ViewDimensions, LegendPosition, ScaleType, LegendOptions } from '../common/types';
+import {ViewDimensions, LegendPosition, ScaleType, LegendOptions, LabelFormatter} from '../common/types';
 
 @Component({
   selector: 'ngx-charts-bar-vertical-stacked',
@@ -110,6 +110,7 @@ export class BarVerticalStackedComponent extends BaseChartComponent {
   @Input() legend: boolean = false;
   @Input() legendTitle: string = 'Legend';
   @Input() legendPosition: LegendPosition = LegendPosition.Right;
+  @Input() legendColumns: number;
   @Input() xAxis;
   @Input() yAxis;
   @Input() showXAxisLabel: boolean;
@@ -134,7 +135,7 @@ export class BarVerticalStackedComponent extends BaseChartComponent {
   @Input() roundDomains: boolean = false;
   @Input() yScaleMax: number;
   @Input() showDataLabel: boolean = false;
-  @Input() dataLabelFormatting: any;
+  @Input() dataLabelFormatting: LabelFormatter;
   @Input() noBarWhenZero: boolean = true;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
@@ -177,7 +178,8 @@ export class BarVerticalStackedComponent extends BaseChartComponent {
       showYLabel: this.showYAxisLabel,
       showLegend: this.legend,
       legendType: this.schemeType,
-      legendPosition: this.legendPosition
+      legendPosition: this.legendPosition,
+      columns: this.legendColumns,
     });
 
     if (this.showDataLabel) {
@@ -302,7 +304,8 @@ export class BarVerticalStackedComponent extends BaseChartComponent {
       colors: undefined,
       domain: [],
       title: undefined,
-      position: this.legendPosition
+      position: this.legendPosition,
+      columns: this.legendColumns,
     };
     if (opts.scaleType === ScaleType.Ordinal) {
       opts.domain = this.innerDomain;

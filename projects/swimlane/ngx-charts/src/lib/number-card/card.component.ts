@@ -1,27 +1,28 @@
 import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  ElementRef,
-  SimpleChanges,
-  OnChanges,
-  ViewChild,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
   NgZone,
+  OnChanges,
   OnDestroy,
+  Output,
   PLATFORM_ID,
-  Inject
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { trimLabel } from '../common/trim-label.helper';
 import { roundedRect } from '../common/shape.helper';
 import { escapeLabel } from '../common/label.helper';
-import { decimalChecker, count } from '../common/count/count.helper';
+import { count, decimalChecker } from '../common/count/count.helper';
 import { GridData } from '../common/grid-layout.helper';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { calculateTextWidth } from '../utils/calculate-width';
 import { VERDANA_FONT_WIDTHS_16_PX } from '../common/constants/font-widths';
+import { LabelFormatter, ValueFormatter } from '../common/types';
 
 @Component({
   selector: 'g[ngx-charts-card]',
@@ -81,8 +82,8 @@ export class CardComponent implements OnChanges, OnDestroy {
   @Input() label: string;
   @Input() data: GridData;
   @Input() medianSize: number;
-  @Input() valueFormatting: any;
-  @Input() labelFormatting: any;
+  @Input() valueFormatting: ValueFormatter;
+  @Input() labelFormatting: LabelFormatter;
   @Input() animations: boolean = true;
 
   @Output() select = new EventEmitter();
@@ -136,8 +137,8 @@ export class CardComponent implements OnChanges, OnDestroy {
   update(): void {
     this.zone.run(() => {
       const hasValue = this.data && typeof this.data.value !== 'undefined';
-      const valueFormatting = this.valueFormatting || (card => card.value.toLocaleString());
-      const labelFormatting = this.labelFormatting || (card => escapeLabel(trimLabel(card.label, 55)));
+      const valueFormatting = this.valueFormatting || (cardValue => cardValue.toLocaleString());
+      const labelFormatting = this.labelFormatting || (label => escapeLabel(trimLabel(label, 55)));
 
       this.transform = `translate(${this.x} , ${this.y})`;
 
@@ -147,16 +148,10 @@ export class CardComponent implements OnChanges, OnDestroy {
 
       this.label = this.label ? this.label : (this.data.name as any);
 
-      const cardData = {
-        label: this.label,
-        data: this.data,
-        value: this.data.value
-      };
-
-      this.formattedLabel = labelFormatting(cardData);
+      this.formattedLabel = labelFormatting(this.label, 0, this.data);
       this.transformBand = `translate(0 , ${this.cardHeight - this.bandHeight})`;
 
-      const value = hasValue ? valueFormatting(cardData) : '';
+      const value = hasValue ? valueFormatting(this.value, 0, this.data) : '';
 
       this.value = this.paddedValue(value);
       this.setPadding();
@@ -193,7 +188,7 @@ export class CardComponent implements OnChanges, OnDestroy {
       const callback = ({ value, finished }) => {
         this.zone.run(() => {
           value = finished ? val : value;
-          this.value = valueFormatting({ label: this.label, data: this.data, value });
+          this.value = valueFormatting(value, 0, this.data);
           if (!finished) {
             this.value = this.paddedValue(this.value);
           }
