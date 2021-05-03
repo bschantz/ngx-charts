@@ -27,6 +27,7 @@ const chartGroups = [
           'roundDomains',
           'tooltipDisabled',
           'roundEdges',
+          'yScaleMin',
           'yScaleMax',
           'showDataLabel',
           'trimXAxisTicks',
